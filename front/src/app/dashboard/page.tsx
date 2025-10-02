@@ -16,7 +16,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchWorkers = async () => {
       try {
-        const res = await fetch("http://localhost:5000/workers");
+        const res = await fetch("https://protecsystem.onrender.com/workers");
         const data = await res.json();
 
         const normalized = data.map((worker: any) => ({

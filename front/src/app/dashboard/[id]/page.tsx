@@ -39,7 +39,7 @@ export default function AvancedScreen() {
   useEffect(() => {
     const fetchWorker = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/workers/${id}`);
+        const res = await fetch(`https://protecsystem.onrender.com/workers/${id}`);
         const data = await res.json();
 
         if (!data) {
