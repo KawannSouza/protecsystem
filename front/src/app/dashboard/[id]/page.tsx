@@ -6,14 +6,35 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Activity, Orbit, PersonStanding, Thermometer, AlertCircle, X } from "lucide-react";
 
+// ✅ Define os tipos de métricas
+interface Metric {
+  value: number;
+  label: string;
+  Icon: React.ComponentType<{ size?: number; className?: string }>;
+  iconColor: string;
+}
+
+// ✅ Define o tipo do Worker
+interface Worker {
+  id: number;
+  name: string;
+  role: string;
+  avatarSrc: string;
+  avatarFallback: string;
+  status: string;
+  supervisor: string;
+  observacoes: string;
+  metrics: Metric[];
+}
+
 export default function AvancedScreen() {
   const params = useParams();
   const { id } = params;
   const router = useRouter();
 
-  const [worker, setWorker] = useState<any>(null);
+  const [worker, setWorker] = useState<Worker | null>(null);
   const [loading, setLoading] = useState(true);
-  const [alertVisible, setAlertVisible] = useState(false); // estado para alerta
+  const [alertVisible, setAlertVisible] = useState(false);
 
   useEffect(() => {
     const fetchWorker = async () => {
@@ -26,7 +47,7 @@ export default function AvancedScreen() {
           return;
         }
 
-        const metrics = [
+        const metrics: Metric[] = [
           { value: data.frequencia ?? 0, label: "BPM", Icon: Activity, iconColor: "text-red-500" },
           { value: data.oxigenacao ?? 0, label: "Oxigenação", Icon: Orbit, iconColor: "text-green-500" },
           { value: data.temperatura ?? 0, label: "°C", Icon: Thermometer, iconColor: "text-yellow-500" },
@@ -41,7 +62,7 @@ export default function AvancedScreen() {
           status: data.status || "OK",
           supervisor: data.supervisor || "Não definido",
           observacoes: data.observacoes || "Nenhuma",
-          metrics: metrics || [],
+          metrics,
         });
       } catch (err) {
         console.error("Erro ao buscar trabalhador:", err);
